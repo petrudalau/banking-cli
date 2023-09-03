@@ -41,7 +41,7 @@ public class MysqlBankRepository implements BankRepository {
   @Override
   public void create(Bank bank) throws GenericException {
     try (Connection conn = DriverManager.getConnection(connectionUrl, user, password)){
-         PreparedStatement ps = conn.prepareStatement("INSERT INTO bank(id, name, external_transfer_fee, external_transfer_fee_company) VALUES (?,?,?,?,?)");
+         PreparedStatement ps = conn.prepareStatement("INSERT INTO bank(id, name, external_transfer_fee, external_transfer_fee_company) VALUES (?,?,?,?)");
          ps.setString(1, bank.getId());
          ps.setString(2, bank.getName());
          ps.setDouble(3, bank.getExternalTransferFee());
