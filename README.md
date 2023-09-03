@@ -47,6 +47,7 @@ create table transaction
     amount          double(20, 10) null
 );
 ```
+
 ##TODO
  * DB constraints
  * cleanup related entities when we delete something

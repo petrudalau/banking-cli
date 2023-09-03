@@ -2,6 +2,7 @@ package org.intexsoft.adapter.in.console;
 
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.intexsoft.adapter.in.console.command.Command;
 import org.intexsoft.adapter.in.console.command.Exit;
 import org.intexsoft.domain.BankTransactionAggregate;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
+@Log4j2
 public class ConsoleReader {
   private final BankTransactionAggregate aggregate;
   private final Map<String, Command> commands;
@@ -53,8 +55,7 @@ public class ConsoleReader {
           }
         }
       } catch (IOException e) {
-        e.printStackTrace();
-        //TODO
+        log.error("Error occured while reading the console input.", e);
         break;
       }
     }
