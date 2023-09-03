@@ -11,4 +11,5 @@ public interface TransactionRepository {
   void create(Transaction transaction) throws GenericException;
   boolean delete(String id) throws GenericException;
   List<Transaction> list(String clientId, Instant fromTime, Instant toTime) throws GenericException;
+  int deleteTrasactionsRelatedtoAccount(String accountId) throws GenericException;
 }

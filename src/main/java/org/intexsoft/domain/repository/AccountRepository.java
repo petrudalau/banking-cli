@@ -6,8 +6,9 @@ import org.intexsoft.domain.exception.GenericException;
 import java.util.List;
 
 public interface AccountRepository {
-  List<Account> list() throws GenericException;
-  List<Account> list(String clientId) throws GenericException;
+  List<Account> accounts() throws GenericException;
+  List<Account> accountsForClient(String clientId) throws GenericException;
+  List<Account> accountsForBank(String bankId) throws GenericException;
   void create(Account account) throws GenericException;
   void update(Account account) throws GenericException;
   Account getById(String id) throws GenericException;

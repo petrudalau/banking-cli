@@ -18,7 +18,7 @@ public class MysqlAccountRepository implements AccountRepository {
   private static String password = "admin";
 
   @Override
-  public List<Account> list() throws GenericException {
+  public List<Account> accounts() throws GenericException {
     try (Connection conn = DriverManager.getConnection(connectionUrl, user, password)){
       PreparedStatement ps = conn.prepareStatement("SELECT id, clientId, bankId, currency, amount FROM account");
       ResultSet resultSet = ps.executeQuery();
@@ -40,7 +40,7 @@ public class MysqlAccountRepository implements AccountRepository {
   }
 
   @Override
-  public List<Account> list(String clientId) throws GenericException {
+  public List<Account> accountsForClient(String clientId) throws GenericException {
     try (Connection conn = DriverManager.getConnection(connectionUrl, user, password)){
       PreparedStatement ps = conn.prepareStatement("SELECT id, bankId, currency, amount FROM account WHERE clientId=?");
       ps.setString(1, clientId);
@@ -50,6 +50,29 @@ public class MysqlAccountRepository implements AccountRepository {
         result.add(Account.builder()
             .id(resultSet.getString(1))
             .clientId(clientId)
+            .bankId(resultSet.getString(2))
+            .currency(Currency.valueOf(resultSet.getString(3)))
+            .amount(resultSet.getBigDecimal(4))
+            .build());
+      }
+      return result;
+    } catch (SQLException e) {
+      log.error("Failed to retrieve client by id.", e);
+      throw new GenericException(e.getMessage());
+    }
+  }
+
+  @Override
+  public List<Account> accountsForBank(String bankId) throws GenericException {
+    try (Connection conn = DriverManager.getConnection(connectionUrl, user, password)){
+      PreparedStatement ps = conn.prepareStatement("SELECT id, bankId, currency, amount FROM account WHERE bankId=?");
+      ps.setString(1, bankId);
+      ResultSet resultSet = ps.executeQuery();
+      List<Account> result = new ArrayList<>();
+      while (resultSet.next()) {
+        result.add(Account.builder()
+            .id(resultSet.getString(1))
+            .bankId(bankId)
             .bankId(resultSet.getString(2))
             .currency(Currency.valueOf(resultSet.getString(3)))
             .amount(resultSet.getBigDecimal(4))

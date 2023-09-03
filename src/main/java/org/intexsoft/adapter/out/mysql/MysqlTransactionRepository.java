@@ -98,4 +98,17 @@ public class MysqlTransactionRepository implements TransactionRepository {
       throw new GenericException(e.getMessage());
     }
   }
+
+  @Override
+  public int deleteTrasactionsRelatedtoAccount(String accountId) throws GenericException {
+    try (Connection conn = DriverManager.getConnection(connectionUrl, user, password)){
+      PreparedStatement ps = conn.prepareStatement("DELETE FROM transaction WHERE fromAccount=? OR toAccount=?");
+      ps.setString(1, accountId);
+      ps.setString(2, accountId);
+      return ps.executeUpdate();
+    } catch (SQLException e) {
+      log.error("Failed to delete transactions.", e);
+      throw new GenericException(e.getMessage());
+    }
+  }
 }

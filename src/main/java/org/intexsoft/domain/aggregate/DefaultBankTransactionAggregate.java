@@ -51,7 +51,11 @@ public class DefaultBankTransactionAggregate implements BankTransactionAggregate
 
   @Override
   public boolean deleteBank(String id) throws GenericException {
-    //TODO delete accounts and transactions
+    // TODO transaction
+    List<Account> accounts = accountRepository.accountsForBank(id);
+    for (Account account : accounts) {
+      deleteAccount(account.getId());
+    }
     return bankRepository.delete(id);
   }
 
@@ -80,7 +84,12 @@ public class DefaultBankTransactionAggregate implements BankTransactionAggregate
 
   @Override
   public boolean deleteClient(String id) throws GenericException {
-    //TODO delete accounts
+    //TODO can be optimized with the single query
+    //TODO transaction
+    List<Account> accounts = listAccounts(id);
+    for (Account account: accounts) {
+      deleteAccount(account.getId());
+    }
     return clientRepository.delete(id);
   }
 
@@ -116,18 +125,25 @@ public class DefaultBankTransactionAggregate implements BankTransactionAggregate
 
   @Override
   public List<Account> listAccounts() throws GenericException {
-    return accountRepository.list();
+    return accountRepository.accounts();
   }
 
   @Override
   public List<Account> listAccounts(String clientId) throws GenericException {
-    return accountRepository.list(clientId);
+    return accountRepository.accountsForClient(clientId);
   }
 
   @Override
   public boolean deleteAccount(String id) throws GenericException {
-    //TODO delete clients if needed
-    return accountRepository.delete(id);
+    Account account = accountRepository.getById(id);
+    Client client = clientRepository.getById(account.getClientId());
+    int transactionsDeleted = transactionRepository.deleteTrasactionsRelatedtoAccount(id);
+    log.info("{} related transactions has been removed.", transactionsDeleted);
+    boolean result = accountRepository.delete(id);
+    if (listAccounts(client.getId()).size() == 0) {
+      clientRepository.delete(client.getId());
+    }
+    return result;
   }
 
   @Override

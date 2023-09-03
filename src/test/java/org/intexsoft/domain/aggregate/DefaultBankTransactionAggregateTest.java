@@ -347,15 +347,24 @@ public class DefaultBankTransactionAggregateTest {
     public List<Transaction> list(String clientId, Instant fromTime, Instant toTime) throws GenericException {
       throw new RuntimeException("unexpected call");
     }
+
+    @Override
+    public int deleteTrasactionsRelatedtoAccount(String accountId) throws GenericException {
+      throw new RuntimeException("unexpected call");
+    }
   }
 
   private static class MockAccountRepository implements AccountRepository {
 
-    public List<Account> list() throws GenericException {
+    public List<Account> accounts() throws GenericException {
       throw new RuntimeException("unexpected call");
     }
 
-    public List<Account> list(String clientId) throws GenericException {
+    public List<Account> accountsForClient(String clientId) throws GenericException {
+      throw new RuntimeException("unexpected call");
+    }
+
+    public List<Account> accountsForBank(String bankId) throws GenericException {
       throw new RuntimeException("unexpected call");
     }
 

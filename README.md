@@ -50,7 +50,6 @@ create table transaction
 
 ##TODO
  * reuse DB connections
- * cleanup related entities when we delete something
  * DB constraints
  * hard or soft delete?
  * clarify fee - is it amount of percentage?
