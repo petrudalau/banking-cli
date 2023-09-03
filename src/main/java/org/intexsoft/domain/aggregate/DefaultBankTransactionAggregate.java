@@ -13,8 +13,8 @@ import org.intexsoft.domain.repository.ClientRepository;
 import org.intexsoft.domain.repository.TransactionRepository;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -175,7 +175,7 @@ public class DefaultBankTransactionAggregate implements BankTransactionAggregate
   private BigDecimal calculateAmountToDeductFromSender(BigDecimal amount, BigDecimal transactionFee, Currency transactionCurrency, Account from) {
     BigDecimal transferAmount = amount;
     if (transactionCurrency != from.getCurrency()) {
-      transferAmount =  amount.divide(getCurrencyExchangeRate(from.getCurrency(), transactionCurrency));
+      transferAmount =  amount.divide(getCurrencyExchangeRate(from.getCurrency(), transactionCurrency), 2, RoundingMode.HALF_UP);
     }
     BigDecimal feeMuliplier = BigDecimal.ONE.add(transactionFee.divide(BigDecimal.valueOf(100)));
     return transferAmount.multiply(feeMuliplier);
