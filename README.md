@@ -49,8 +49,9 @@ create table transaction
 ```
 
 ##TODO
- * DB constraints
+ * reuse DB connections
  * cleanup related entities when we delete something
+ * DB constraints
  * hard or soft delete?
  * clarify fee - is it amount of percentage?
  * scale decimal amounts everywhere
