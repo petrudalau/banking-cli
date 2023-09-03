@@ -5,7 +5,6 @@ import org.intexsoft.domain.exception.GenericException;
 
 import java.util.List;
 
-// TODO soft delete????
 public interface BankRepository {
   List<Bank> list() throws GenericException;
   void create(Bank bank) throws GenericException;

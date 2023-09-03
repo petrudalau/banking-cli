@@ -9,8 +9,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
-//FIXME split into multiple aggregates??
-//TODO list by id apis, delete by id apis
 public interface BankTransactionAggregate {
   String createBank(Bank bank) throws GenericException;
   void updateBank(Bank bank) throws GenericException, NotFoundException;
